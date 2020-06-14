@@ -1,5 +1,5 @@
 # autoRestfulPrisma
-Simple and easy to use automated MVC-like REST API boilerplate built using Express, and Prisma as the model.
+Simple and easy to use automated MVC-like REST API backend built using Express, and Prisma as the model.
 
 You could say it's the continuation of my old [repo](https://github.com/itsfaqih/autoRestful).
 
@@ -80,6 +80,20 @@ PUT /users/:id (update user data)
 DELETE /users/:id (delete user data)
 ```
 NB: id parameter is using "id" field by default.
+### Using Scaffolding
+You can also generate the Controller, Repository, and Route automatically using cli.
+```bash
+node ./scaffolds/cli make:rest <Entity> <Table>:optional
+```
+For example:
+```bash
+# Generate UserController, UserRepository, and /users endpoint
+node ./scaffolds/cli User users 
+
+# Generate BookController, BookRepository, and /book endpoint
+node ./scaffolds/cli Book 
+
+```
 ### Run the REST API Server
 The server will run at port 3000 by default
 ```bash

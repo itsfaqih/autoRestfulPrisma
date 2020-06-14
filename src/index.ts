@@ -1,4 +1,3 @@
-import { PrismaClient } from '@prisma/client'
 import * as bodyParser from 'body-parser'
 import express from 'express'
 
