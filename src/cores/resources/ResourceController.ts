@@ -1,10 +1,12 @@
-import { Request, Response } from "express"
+import { Request, Response } from 'express'
+import Controller from '../Controller'
 
-class Controller {
-  model: any
+class ResourceController extends Controller {
+  repository: any
 
-  constructor(Model: any) {
-    this.model = Model
+  constructor(repository: any) {
+    super()
+    this.repository = repository
     this.index = this.index.bind(this)
     this.store = this.store.bind(this)
     this.show = this.show.bind(this)
@@ -14,7 +16,7 @@ class Controller {
 
   async index(req: Request, res: Response) {
     try {
-      const result = await this.model.findMany()
+      const result = await this.repository.all()
       res.send({ status: 200, data: result })
     } catch (error) {
       res.send({ status: 422, error: error.message })
@@ -23,11 +25,7 @@ class Controller {
 
   async store(req: Request, res: Response) {
     try {
-      const result = await this.model.create({
-        data: {
-          ...req.body,
-        },
-      })
+      const result = await this.repository.create(req.body)
       res.send({ status: 201, data: result })
     } catch (error) {
       res.send({ status: 422, error: error.message })
@@ -38,12 +36,7 @@ class Controller {
     const id = parseInt(req.params.id)
 
     try {
-      const result = await this.model.findOne({
-        where: {
-          id
-        }
-      })
-  
+      const result = await this.repository.findById(id)
       res.send({ status: 200, data: result })
     } catch (error) {
       res.send({ status: 422, error: error.message })
@@ -54,12 +47,7 @@ class Controller {
     const id = parseInt(req.params.id)
 
     try {
-      const result = await this.model.update({
-        where: { id },
-        data: {
-          ...req.body
-        },
-      })
+      const result = await this.repository.update(id, req.body)
       res.send({ status: 200, data: result })
     } catch (error) {
       res.send({ status: 422, error: error.message })
@@ -70,10 +58,7 @@ class Controller {
     const id = parseInt(req.params.id)
 
     try {
-      const result = await this.model.delete({
-        where: { id }
-      })
-
+      const result = await this.repository.delete(id)
       res.send({ status: 200, data: result })
     } catch (error) {
       res.send({ status: 200, error: error.message })
@@ -82,4 +67,4 @@ class Controller {
   }
 }
 
-export default Controller
+export default ResourceController

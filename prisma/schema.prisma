@@ -7,13 +7,70 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  createdAt DateTime  @default(now()) @map(name: "created_at")
-  email      String    @unique
-  id         Int       @default(autoincrement()) @id
+model categories {
+  id      Int       @default(autoincrement()) @id
+  name    String    @unique
+  courses courses[]
+}
+
+model courses {
+  category_id  Int?
+  created_at   DateTime       @default(now())
+  description  String?
+  id           Int            @default(autoincrement()) @id
+  language_id  Int?
+  level        courses_level
+  title        String
+  updated_at   DateTime?
+  categories   categories?    @relation(fields: [category_id], references: [id])
+  languages    languages?     @relation(fields: [language_id], references: [id])
+  courses_tags courses_tags[]
+
+  @@index([category_id], name: "category_id")
+  @@index([language_id], name: "language_id")
+}
+
+model courses_tags {
+  course_id Int
+  id        Int     @default(autoincrement()) @id
+  tag_id    Int
+  courses   courses @relation(fields: [course_id], references: [id])
+  tags      tags    @relation(fields: [tag_id], references: [id])
+
+  @@index([course_id], name: "course_id")
+  @@index([tag_id], name: "tag_id")
+}
+
+model languages {
+  id      Int       @default(autoincrement()) @id
+  name    String    @unique
+  courses courses[]
+}
+
+model tags {
+  id           Int            @default(autoincrement()) @id
+  name         String         @unique
+  courses_tags courses_tags[]
+}
+
+model users {
+  created_at DateTime    @default(now())
+  email      String      @unique
+  id         Int         @default(autoincrement()) @id
+  level      users_level
   name       String
   password   String
-  updatedAt DateTime? @map(name: "updated_at")
+  updated_at DateTime?
+}
 
-  @@map(name: "users")
+enum courses_level {
+  beginner
+  intermediate
+  expert
+}
+
+enum users_level {
+  beginner
+  intermediate
+  expert
 }

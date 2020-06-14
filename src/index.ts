@@ -1,21 +1,22 @@
 import { PrismaClient } from '@prisma/client'
 import * as bodyParser from 'body-parser'
 import express from 'express'
-import Controller from './controllers/Controller'
 
-const prisma = new PrismaClient()
 const app = express()
 
 app.use(bodyParser.json())
 
 const routes = require('./routes')
 
-routes.forEach(({ endpoint, controller }: {
+routes.forEach(({ endpoint, resource, controller }: {
   endpoint: string
-  controller: Controller
+  resource: boolean
+  controller: any
 }) => {
-  app.route(`${endpoint}`).get(controller.index).post(controller.store)
-  app.route(`${endpoint}/:id`).get(controller.show).put(controller.update).delete(controller.destroy)
+  if (resource) {
+    app.route(`${endpoint}`).get(controller.index).post(controller.store)
+    app.route(`${endpoint}/:id`).get(controller.show).put(controller.update).delete(controller.destroy)
+  }
 });
 
 const server = app.listen(3000, () =>

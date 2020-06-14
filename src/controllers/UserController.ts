@@ -1,9 +1,10 @@
-import { PrismaClient } from '@prisma/client'
-import Controller from './Controller'
+import ResourceController from '../cores/resources/ResourceController'
+import UserRepository from '../repositories/UserRepository'
 
-const prisma = new PrismaClient()
-const User = prisma.user
-
-const UserController = new Controller(User)
+class UserController extends ResourceController {
+  constructor() {
+    super(new UserRepository())
+  }
+}
 
 export default UserController
