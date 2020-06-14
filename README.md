@@ -18,6 +18,7 @@ Change the DATABASE_URL to your database URL, and the provider in schema.prisma 
 You can see more detailed guides [here](https://www.prisma.io/docs/reference/database-connectors/connection-urls).
 
 or you could just try it quick using the populated demo database (the dev.db) without changing any configuration.
+
 3. Introspect the database with Prisma
 ```bash
 npx prisma introspect
@@ -80,7 +81,7 @@ DELETE /users/:id (delete user data)
 ```
 NB: id parameter is using "id" field by default.
 ### Run the REST API Server
-The server will run at Port 3000 by default
+The server will run at port 3000 by default
 ```bash
 npm run dev
 ```
