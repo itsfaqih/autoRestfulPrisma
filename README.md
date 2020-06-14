@@ -1,5 +1,5 @@
 # autoRestfulPrisma
-Simple and easy to use automated MVC-like REST API backend built using Express, and Prisma as the model.
+Simple and easy to use automated MVC-like REST API boilerplate built using Express, and Prisma as the model.
 
 You could say it's the continuation of my old [repo](https://github.com/itsfaqih/autoRestful).
 
