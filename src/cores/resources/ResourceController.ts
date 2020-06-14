@@ -17,18 +17,18 @@ class ResourceController extends Controller {
   async index(req: Request, res: Response) {
     try {
       const result = await this.repository.all()
-      res.send({ status: 200, data: result })
+      res.status(200).send({ data: result })
     } catch (error) {
-      res.send({ status: 422, error: error.message })
+      res.status(200).send({ error: error.message })
     }
   }
 
   async store(req: Request, res: Response) {
     try {
       const result = await this.repository.create(req.body)
-      res.send({ status: 201, data: result })
+      res.status(201).send({ data: result })
     } catch (error) {
-      res.send({ status: 422, error: error.message })
+      res.status(422).send({ error: error.message })
     }
   }
 
@@ -37,9 +37,9 @@ class ResourceController extends Controller {
 
     try {
       const result = await this.repository.findById(id)
-      res.send({ status: 200, data: result })
+      res.status(200).send({ data: result })
     } catch (error) {
-      res.send({ status: 422, error: error.message })
+      res.status(400).send({ error: error.message })
     }
   }
 
@@ -48,9 +48,9 @@ class ResourceController extends Controller {
 
     try {
       const result = await this.repository.update(id, req.body)
-      res.send({ status: 200, data: result })
+      res.status(204).send({ data: result })
     } catch (error) {
-      res.send({ status: 422, error: error.message })
+      res.status(422).send({ error: error.message })
     }
   }
 
@@ -59,9 +59,9 @@ class ResourceController extends Controller {
 
     try {
       const result = await this.repository.delete(id)
-      res.send({ status: 200, data: result })
+      res.status(200).send({ data: result })
     } catch (error) {
-      res.send({ status: 200, error: error.message })
+      res.status(400).send({ error: error.message })
     }
 
   }

@@ -17,38 +17,68 @@ class ResourceRepository extends Repository {
   }
 
   async all() {
-    return await this.model.findMany()
+    try {
+      return await this.model.findMany()
+    } catch (error) {
+      throw error
+    } finally {
+      await this.prisma.disconnect()
+    }
   }
 
   async create(data: any) {
-    return await this.model.create({
-      data: {
-        ...data,
-      },
-    })
+    try {
+      return await this.model.create({
+        data: {
+          ...data,
+        },
+      })
+    } catch (error) {
+      throw error
+    } finally {
+      await this.prisma.disconnect()
+    }
   }
 
   async findById(id: number) {
-    return await this.model.findOne({
-      where: {
-        id
-      }
-    })
+    try {
+      return await this.model.findOne({
+        where: {
+          id
+        }
+      })
+    } catch (error) {
+      throw error
+    } finally {
+      await this.prisma.disconnect()
+    }
   }
 
   async update(id: number, data: any) {
-    return await this.model.update({
-      where: { id },
-      data: {
-        ...data
-      },
-    })
+    try {
+      return await this.model.update({
+        where: { id },
+        data: {
+          ...data
+        },
+      })
+    } catch (error) {
+      throw error
+    } finally {
+      await this.prisma.disconnect()
+    }
   }
 
   async delete(id: number) {
-    return await this.model.delete({
-      where: { id }
-    })
+    try {
+      return await this.model.delete({
+        where: { id }
+      })
+    } catch (error) {
+      throw error
+    } finally {
+      await this.prisma.disconnect()
+    }
   }
 }
 
