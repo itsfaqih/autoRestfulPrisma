@@ -34,10 +34,24 @@ npx prisma generate
 // src/repositories/UserRepository.ts (you can create your own)
 import ResourceRepository from '../cores/resources/ResourceRepository' // REST boilerplate repository
 
-class UserRepository extends ResourceRepository {
+class UserRepository extends ResourceRepository { // or extend Repository
   constructor() {
     super()
     this.setModel(this.prisma.users) // Set the model
+  }
+
+  async findByEmail(email: string) { // Create your own custom method
+    try {
+      return await this.model.findOne({
+        where: {
+          email
+        }
+      })
+    } catch (error) {
+      throw error
+    } finally {
+      await this.prisma.disconnect()
+    }
   }
 }
 
@@ -49,9 +63,23 @@ export default UserRepository
 import ResourceController from '../cores/resources/ResourceController' // REST boilerplate controller
 import UserRepository from '../repositories/UserRepository'
 
-class UserController extends ResourceController {
+class UserController extends ResourceController { // or extend Controller
   constructor() {
     super(new UserRepository()) // Pass the repository
+  }
+
+  async whoseEmail(req: Request, res: Response) { // Create your own custom method
+    try {
+      const user = await this.repository.findByEmail(req.query.email)
+
+      if (user != null) {
+        res.send({ data: user })
+      } else {
+        res.send({ data: null })
+      }
+    } catch (error) {
+      res.status(400).send({ error: error.message })
+    }
   }
 }
 
@@ -68,10 +96,15 @@ module.exports = [
     endpoint: '/users', // Set the endpoint url
     resource: true, // Set it true if it's REST controller
     controller: new UserController() // initialize the controller
+  },
+  {
+    endpoint: '/whose_email', // Custom endpoint
+    controller: (new UserController()).whoseEmail // Select the handler,
+    method: 'GET' // Select the HTTP Method, it's GET by default
   }
 ]
 ```
-This will generate all restful endpoints as follows:
+If you're using the Resource, it will generate all restful endpoints as follows:
 ```
 GET /users (get all user data)
 POST /users (create new user)
